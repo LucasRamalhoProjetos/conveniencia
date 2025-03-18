@@ -1,5 +1,29 @@
 import streamlit as st
+import sqlite3
 from PIL import Image
+import hashlib
+
+# Função para conectar ao banco de dados SQLite
+def conectar_banco():
+    conn = sqlite3.connect('usuarios.db')
+    c = conn.cursor()
+    c.execute('''CREATE TABLE IF NOT EXISTS usuarios
+                 (id INTEGER PRIMARY KEY AUTOINCREMENT,
+                  nome_usuario TEXT UNIQUE,
+                  email TEXT,
+                  senha TEXT)''')
+    conn.commit()
+    return conn, c
+
+# Função para verificar as credenciais de login
+def verificar_login(nome_usuario, senha):
+    conn, c = conectar_banco()
+    senha_hash = hashlib.sha256(senha.encode()).hexdigest()
+    c.execute("SELECT * FROM usuarios WHERE nome_usuario = ? AND senha = ?",
+              (nome_usuario, senha_hash))
+    usuario = c.fetchone()
+    conn.close()
+    return usuario
 
 # Função para exibir os produtos
 def exibir_produtos():
@@ -66,5 +90,30 @@ def exibir_produtos():
     else:
         st.sidebar.write("Seu carrinho está vazio.")
 
+# Função para exibir o formulário de login
+# Função para exibir o formulário de login
+def exibir_login():
+    st.title("Login")
+    nome_usuario = st.text_input("Nome de Usuário")
+    senha = st.text_input("Senha", type='password')
+    if st.button("Entrar"):
+        usuario = verificar_login(nome_usuario, senha)
+        if usuario:
+            st.session_state.usuario_autenticado = True
+            st.session_state.nome_usuario = nome_usuario
+            # Define o parâmetro na URL
+            st.query_params["logged_in"] = "true"
+            # Recarrega a aplicação para exibir os produtos
+            st.rerun()
+        else:
+            st.error("Nome de usuário ou senha inválidos.")
+
+# Função principal que controla a navegação entre login e produtos
+def main():
+    if 'usuario_autenticado' not in st.session_state or not st.session_state.usuario_autenticado:
+        exibir_login()
+    else:
+        exibir_produtos()
+
 if __name__ == "__main__":
-    exibir_produtos()
+    main()
