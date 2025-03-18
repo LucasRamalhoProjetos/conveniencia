@@ -100,6 +100,7 @@ def exibir_produtos():
 # Função para exibir o formulário de login
 def exibir_login():
     st.title("Login")
+    st.write("Explore nossos produtos e faça suas compras online com comodidade. Entregamos diretamente na sua casa!")
     nome_usuario = st.text_input("Nome de Usuário")
     senha = st.text_input("Senha", type='password')
     if st.button("Entrar"):
@@ -115,7 +116,6 @@ def exibir_login():
             st.rerun()
         else:
             st.error("Nome de usuário ou senha inválidos.")
-st.write("Explore nossos produtos e faça suas compras online com comodidade. Entregamos diretamente na sua casa!")
 # Função principal que controla a navegação entre login e produtos
 def main():
     if 'usuario_autenticado' not in st.session_state or not st.session_state.usuario_autenticado:
