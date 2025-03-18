@@ -28,7 +28,6 @@ def verificar_login(nome_usuario, senha):
 # Função para exibir os produtos
 def exibir_produtos():
     st.title("Bem-vindo à Nossa Conveniência Online!")
-    st.write("Explore nossos produtos e faça suas compras online com comodidade. Entregamos diretamente na sua casa!")
 
     # Lista de produtos com categorias
     produtos = [
