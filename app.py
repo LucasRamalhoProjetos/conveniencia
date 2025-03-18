@@ -8,12 +8,12 @@ def exibir_produtos():
 
     # Lista de produtos
     produtos = [
-        {"nome": "Produto 1", "preco": 35.00, "descricao": "Caixa de cerveja", "imagem": "imagens/produto1.jpg"},
-        {"nome": "Produto 2", "preco": 12.50, "descricao": "Cigarro", "imagem": "imagens/produto2.jpg"},
-        {"nome": "Produto 3", "preco": 7.25, "descricao": "Coca Cola", "imagem": "imagens/produto3.jpg"},
-        {"nome": "Produto 4", "preco": 15.00, "descricao": "Água Mineral", "imagem": "imagens/produto4.jpg"},
-        {"nome": "Produto 5", "preco": 22.30, "descricao": "Suco de Laranja", "imagem": "imagens/produto5.jpg"},
-        {"nome": "Produto 6", "preco": 10.00, "descricao": "Biscoitos", "imagem": "imagens/produto6.jpg"},
+        {"nome": "cerveja", "preco": 35.00, "descricao": "Caixa de cerveja", "imagem": "imagens/produto1.jpg"},
+        {"nome": "Cigarro", "preco": 12.50, "descricao": "Cigarro", "imagem": "imagens/produto2.jpg"},
+        {"nome": "Coca Cola", "preco": 7.25, "descricao": "Coca Cola", "imagem": "imagens/produto3.jpg"},
+        {"nome": "Água", "preco": 15.00, "descricao": "Água Mineral", "imagem": "imagens/produto4.jpg"},
+        {"nome": "Suco", "preco": 22.30, "descricao": "Suco de Laranja", "imagem": "imagens/produto5.jpg"},
+        {"nome": "Biscoito", "preco": 10.00, "descricao": "Biscoitos", "imagem": "imagens/produto6.jpg"},
     ]
 
     # Inicializa o estado da sessão para o carrinho de compras
@@ -40,7 +40,7 @@ def exibir_produtos():
             st.subheader(produto["nome"])
             st.write(f"Preço: R${produto['preco']:.2f}")
             st.write(produto["descricao"])
-            if st.button(f"Adicionar {produto['nome']} ao carrinho", key=produto["nome"]):
+            if st.button("Adicionar ao carrinho", key=produto["nome"]):
                 st.session_state.carrinho.append(produto)
                 st.success(f"{produto['nome']} adicionado ao carrinho!")
 
