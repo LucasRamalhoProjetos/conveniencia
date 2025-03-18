@@ -14,24 +14,21 @@ def exibir_produtos():
         {"nome": "Produto 4", "preco": 15.00, "descricao": "Água Mineral", "imagem": "imagens/produto4.jpg"},
         {"nome": "Produto 5", "preco": 22.30, "descricao": "Suco de Laranja", "imagem": "imagens/produto5.jpg"},
         {"nome": "Produto 6", "preco": 10.00, "descricao": "Biscoitos", "imagem": "imagens/produto6.jpg"},
-        {"nome": "Produto 7", "preco": 18.00, "descricao": "Chocolate", "imagem": "imagens/produto7.jpg"},
-        {"nome": "Produto 8", "preco": 5.50, "descricao": "Refrigerante", "imagem": "imagens/produto8.jpg"},
     ]
 
     # Inicializa o estado da sessão para o carrinho de compras
     if 'carrinho' not in st.session_state:
         st.session_state.carrinho = []
 
-    # Define o número de colunas: Sempre pelo menos 2 colunas, e no máximo 5
-    num_produtos = len(produtos)
-    num_colunas = max(3, min(5, num_produtos // 3))  # Pelo menos 2 colunas e no máximo 5
+    # Define a quantidade de colunas com base no tamanho da tela
+    # Ajuste para garantir no mínimo 2 colunas
+    num_colunas = 3 # Número mínimo de colunas
 
     # Cria as colunas
     colunas = st.columns(num_colunas)
 
-    # Define o tamanho fixo da imagem
-    largura_imagem = 300
-    altura_imagem = 300
+    # Define o tamanho fixo da imagem para exibição compacta
+    largura_imagem = 100  # Tamanho reduzido
 
     # Distribui os produtos entre as colunas
     for i, produto in enumerate(produtos):
@@ -39,8 +36,7 @@ def exibir_produtos():
         with coluna:
             try:
                 imagem = Image.open(produto["imagem"])
-                imagem = imagem.resize((largura_imagem, altura_imagem))  # Redimensiona a imagem
-                st.image(imagem, use_container_width=True)
+                st.image(imagem, width=largura_imagem)  # Ajusta apenas a largura da imagem
             except FileNotFoundError:
                 st.error(f"Imagem não encontrada: {produto['imagem']}")
             st.subheader(produto["nome"])
