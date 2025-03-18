@@ -1,5 +1,6 @@
 import streamlit as st
 from PIL import Image
+import math
 
 # Função para exibir os produtos
 def exibir_produtos():
@@ -14,18 +15,31 @@ def exibir_produtos():
         {"nome": "Produto 4", "preco": 15.00, "descricao": "Água Mineral", "imagem": "imagens/produto4.jpg"},
         {"nome": "Produto 5", "preco": 22.30, "descricao": "Suco de Laranja", "imagem": "imagens/produto5.jpg"},
         {"nome": "Produto 6", "preco": 10.00, "descricao": "Biscoitos", "imagem": "imagens/produto6.jpg"},
+        {"nome": "Produto 7", "preco": 18.00, "descricao": "Chocolate", "imagem": "imagens/produto7.jpg"},
+        {"nome": "Produto 8", "preco": 5.50, "descricao": "Refrigerante", "imagem": "imagens/produto8.jpg"},
     ]
 
     # Inicializa o estado da sessão para o carrinho de compras
     if 'carrinho' not in st.session_state:
         st.session_state.carrinho = []
 
-    # Exibição dos produtos em três colunas
-    colunas = st.columns(3)
+    # Define o número mínimo de colunas (2) e o máximo (5)
+    num_colunas = min(max(3, len(produtos) // 3), 5)  # Dividir por 3 para que os produtos caibam bem nas colunas
+
+    # Cria as colunas
+    colunas = st.columns(num_colunas)
+
+    # Define o tamanho fixo da imagem
+    largura_imagem = 300
+    altura_imagem = 300
+
+    # Distribui os produtos entre as colunas
     for i, produto in enumerate(produtos):
-        with colunas[i % 3]:
+        coluna = colunas[i % num_colunas]
+        with coluna:
             try:
                 imagem = Image.open(produto["imagem"])
+                imagem = imagem.resize((largura_imagem, altura_imagem))  # Redimensiona a imagem
                 st.image(imagem, use_container_width=True)
             except FileNotFoundError:
                 st.error(f"Imagem não encontrada: {produto['imagem']}")
