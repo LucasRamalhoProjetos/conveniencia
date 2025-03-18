@@ -44,6 +44,13 @@ def exibir_produtos():
     if 'carrinho' not in st.session_state:
         st.session_state.carrinho = []
 
+    # Exibe as informações do usuário logado no sidebar
+    if 'usuario_autenticado' in st.session_state and st.session_state.usuario_autenticado:
+        st.sidebar.header("Informações do Usuário")
+        st.sidebar.write(f"**Usuário:** {st.session_state.nome_usuario}")
+        # Adicione mais informações do usuário aqui, se necessário
+        # Exemplo: st.sidebar.write(f"**Email:** {st.session_state.email}")
+
     # Filtro de categoria
     categorias_disponiveis = sorted(set([produto['categoria'] for produto in produtos]))
     categoria_selecionada = st.selectbox(
@@ -91,7 +98,6 @@ def exibir_produtos():
         st.sidebar.write("Seu carrinho está vazio.")
 
 # Função para exibir o formulário de login
-# Função para exibir o formulário de login
 def exibir_login():
     st.title("Login")
     nome_usuario = st.text_input("Nome de Usuário")
@@ -101,6 +107,8 @@ def exibir_login():
         if usuario:
             st.session_state.usuario_autenticado = True
             st.session_state.nome_usuario = nome_usuario
+            # Armazene mais informações do usuário, se necessário
+            # Exemplo: st.session_state.email = usuario[2]
             # Define o parâmetro na URL
             st.query_params["logged_in"] = "true"
             # Recarrega a aplicação para exibir os produtos
