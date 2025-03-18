@@ -1,6 +1,5 @@
 import streamlit as st
 from PIL import Image
-import math
 
 # Função para exibir os produtos
 def exibir_produtos():
@@ -23,8 +22,9 @@ def exibir_produtos():
     if 'carrinho' not in st.session_state:
         st.session_state.carrinho = []
 
-    # Define o número mínimo de colunas (2) e o máximo (5)
-    num_colunas = min(max(3, len(produtos) // 3), 5)  # Dividir por 3 para que os produtos caibam bem nas colunas
+    # Define o número de colunas: Sempre pelo menos 2 colunas, e no máximo 5
+    num_produtos = len(produtos)
+    num_colunas = max(3, min(5, num_produtos // 3))  # Pelo menos 2 colunas e no máximo 5
 
     # Cria as colunas
     colunas = st.columns(num_colunas)
