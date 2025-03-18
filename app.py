@@ -20,23 +20,43 @@ def exibir_produtos():
     if 'carrinho' not in st.session_state:
         st.session_state.carrinho = []
 
-    # Define a quantidade de colunas com base no tamanho da tela
-    # Ajuste para garantir no mínimo 2 colunas
-    num_colunas = 3 # Número mínimo de colunas
-
-    # Cria as colunas
+    # Define 3 colunas fixas
+    num_colunas = 3
     colunas = st.columns(num_colunas)
 
-    # Define o tamanho fixo da imagem para exibição compacta
-    largura_imagem = 100  # Tamanho reduzido
+    # Define o tamanho fixo das imagens
+    largura_imagem = 150  # Largura
+    altura_imagem = 150   # Altura
 
-    # Distribui os produtos entre as colunas
+    # Estilos CSS para o botão e a mensagem de sucesso
+    st.markdown("""
+        <style>
+            .small-button {
+                font-size: 12px;  /* Tamanho da fonte */
+                padding: 5px 15px;  /* Ajusta o tamanho do botão */
+                border-radius: 5px;  /* Arredonda os cantos */
+                background-color: #4CAF50;  /* Cor de fundo */
+                color: white;  /* Cor do texto */
+                border: none;  /* Sem borda */
+            }
+            .small-button:hover {
+                background-color: #45a049;  /* Cor de fundo ao passar o mouse */
+            }
+            .small-message {
+                font-size: 10px;  /* Tamanho da fonte da mensagem */
+                color: green;  /* Cor da mensagem */
+            }
+        </style>
+    """, unsafe_allow_html=True)
+
+    # Distribui os produtos entre as 3 colunas fixas
     for i, produto in enumerate(produtos):
         coluna = colunas[i % num_colunas]
         with coluna:
             try:
                 imagem = Image.open(produto["imagem"])
-                st.image(imagem, width=largura_imagem)  # Ajusta apenas a largura da imagem
+                imagem = imagem.resize((largura_imagem, altura_imagem))  # Redimensiona a imagem
+                st.image(imagem)  # Exibe a imagem com o tamanho redimensionado
             except FileNotFoundError:
                 st.error(f"Imagem não encontrada: {produto['imagem']}")
             st.subheader(produto["nome"])
@@ -44,7 +64,8 @@ def exibir_produtos():
             st.write(produto["descricao"])
             if st.button(f"Adicionar {produto['nome']} ao carrinho", key=produto["nome"]):
                 st.session_state.carrinho.append(produto)
-                st.success(f"{produto['nome']} adicionado ao carrinho!")
+                # Mensagem de sucesso com estilo personalizado
+                st.markdown(f'<p class="small-message">{produto["nome"]} adicionado ao carrinho!</p>', unsafe_allow_html=True)
 
     # Exibe o carrinho de compras
     st.sidebar.header("Carrinho de Compras")
